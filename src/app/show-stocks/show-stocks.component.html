@@ -1,0 +1,79 @@
+<app-home ></app-home>
+
+<div class="container" style="margin-top: 10%;">
+  <h3 class="mb-4">Available Stocks</h3>
+
+  <table class="table table-bordered table-hover text-center align-middle">
+    <thead class="table-success">
+      <tr>
+        <th>Stock Image</th>
+        <th>Stock Name</th>
+        <th>Stock Price</th>
+        <th>Total Stocks Available</th>
+        <th>Buy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stock of stockList">
+        <td><img [src]="stock.stocksImage" [alt]="stock.stockName" width="60" /></td>
+        <td>{{ stock.stockName }}</td>
+        <td>{{ stock.stockPrice | currency:'INR' }}</td>
+        <td>{{ stock.totalStocks }}</td>
+    
+        <td>
+          <button class="btn btn-primary btn-sm" (click)="openBuyModal(stock)">Buy</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Modal Template -->
+  <ng-template #buyModal let-modal>
+    <div class="modal-header">
+     
+      <h5 class="modal-title">Buy Stock - {{ selectedStock?.stockName }}</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="buyMessage" class="alert"
+           [ngClass]="{'alert-success': isSuccessMessage, 'alert-danger': !isSuccessMessage}">
+        {{ buyMessage }}
+      </div>
+
+      <div class="mb-3">
+  <label class="form-label">Number of Stocks</label>
+  <input type="number" class="form-control"
+         [(ngModel)]="buyQuantity"
+         [max]="selectedStock?.totalStocks"
+         min="1"
+         required
+         (ngModelChange)="validateBuyForm()" />
+  
+  <div *ngIf="buyQuantityError === 'invalid'" class="text-danger mt-1">
+    Please enter a positive whole number.
+  </div>
+  <div *ngIf="buyQuantityError === 'exceed'" class="text-danger mt-1">
+    Maximum available: {{ selectedStock?.totalStocks }}
+  </div>
+</div>
+
+<div class="mb-3">
+  <label class="form-label">Enter PIN</label>
+  <input type="password" class="form-control"
+         [(ngModel)]="enteredBuyPin"
+         required />
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+  <button class="btn btn-success"
+          [disabled]="!formValid"
+          (click)="proceedToBuy(modal)">
+    Confirm Buy
+  </button>
+</div>
+
+</div>
+  </ng-template>
+</div>

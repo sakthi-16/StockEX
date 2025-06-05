@@ -1,0 +1,87 @@
+/* Fixed Top Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #065aa9 !important;
+    border-radius: 0 0 8px 8px;
+    padding: 10px 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Add spacing to body content to avoid overlap */
+body {
+    padding-top: 70px; /* Adjust based on navbar height */
+}
+
+/* Button Styles */
+.btn {
+    margin: 0 5px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+}
+
+.btn:hover {
+    background-color: #f8f9fa !important;
+    color: #343a40 !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown Toggle Arrow */
+.dropdown-toggle::after {
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    animation: dropdown-fade 0.3s ease-in-out;
+}
+
+@keyframes dropdown-fade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Dropdown Item */
+.dropdown-item {
+    padding: 10px 16px;
+    transition: background-color 0.3s ease, padding-left 0.3s ease;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background-color: #065aa9;
+    color: white;
+    padding-left: 22px;
+}
+
+/* Navbar Profile Image Styling */
+.nav-item img {
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.nav-item img:hover {
+    transform: scale(1.1);
+}
+
+/* Optional spacing fix for right-aligned buttons */
+.btn[style*="margin-left:450px"] {
+    margin-left: auto !important;
+}

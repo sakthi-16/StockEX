@@ -1,0 +1,37 @@
+<app-home></app-home>
+<div class="table-container" style="margin-top:10%;" *ngIf="transactions.length > 0; else noData">
+  <h2>All Account Transactions</h2>
+
+  <table class="transaction-table">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Amount</th>
+        <th>Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tx of paginatedTransactions; let i = index">
+        <td>{{ tx.amountTransactedTime }}</td>
+        
+       
+        <td [ngClass]="getTransactionTypeClass(tx, i)">
+          ₹{{ tx.amountTransacted }}
+        </td>
+
+        <td>₹{{ tx.currentAccountBalance }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination controls -->
+  <div class="pagination-controls">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>
+
+<ng-template #noData>
+  <p class="no-transactions">No recent transactions to show.</p>
+</ng-template>

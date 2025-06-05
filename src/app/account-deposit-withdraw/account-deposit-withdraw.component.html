@@ -1,0 +1,39 @@
+<app-home></app-home>
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+  <div class="login-box bg-light p-4 rounded shadow" style="width: 100%; max-width: 500px;">
+    <form #form="ngForm" (ngSubmit)="submitTransaction(action)">
+      <div class="text-center mb-4">
+        <img alt height="120px" width="150px" src="assets/images/logoStockEX.jpg" />
+      </div>
+
+      <!-- Amount -->
+      <label for="amount">Amount</label>
+      <input type="number" id="amount" name="amount" [(ngModel)]="amount" required
+             placeholder="Enter the amount" class="form-control mb-3" />
+
+      <!-- PIN -->
+      <label for="accountPIN">Account PIN</label>
+      <input type="password" id="accountPIN" name="accountPIN" [(ngModel)]="accountPIN" required
+             placeholder="*********" class="form-control mb-4" />
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-between gap-3">
+        <button type="submit" class="btn btn-success w-50" (click)="action = 'deposit'">Deposit</button>
+        <button type="submit" class="btn btn-danger w-50" (click)="action = 'withdraw'">Withdraw</button>
+      </div>
+    </form>
+
+    <!-- Transaction History -->
+    <div *ngIf="transactionHistory.length > 0" class="mt-4">
+      <h5 class="text-center mb-3">Transaction History</h5>
+      <ul class="list-group">
+        <li *ngFor="let t of transactionHistory" class="list-group-item d-flex justify-content-between">
+          <span class="fw-bold text-capitalize">{{ t.type }}</span>
+          <span>₹{{ t.amount }}</span>
+          <span class="text-muted" style="font-size: 0.8rem">{{ t.time | date:'short' }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

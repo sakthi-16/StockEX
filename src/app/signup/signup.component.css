@@ -1,0 +1,8 @@
+.signup-box {
+  max-width: 600px;
+  margin: auto;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

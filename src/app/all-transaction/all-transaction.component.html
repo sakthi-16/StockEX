@@ -1,0 +1,33 @@
+<app-home></app-home>
+
+<div style="margin-top:10%" class="table-container" *ngIf="paginatedData.length > 0">
+  <h2>Stock Transactions</h2>
+  <table class="transaction-table">
+    <thead>
+      <tr>
+        <th>Stock</th>
+        <th>Image</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tx of paginatedData">
+        <td>{{ tx.stockName }}</td>
+        <td><img [src]="tx.stockImage" alt="{{ tx.stockName }}" width="40" height="40" /></td>
+        <td [ngClass]="tx.transactionType === 'deposit' ? 'came-in' : 'gone-out'">
+          ₹{{ tx.amountCameInOrGoneOut }}
+          <span class="badge" [ngClass]="tx.transactionType === 'deposit' ? 'badge-deposit' : 'badge-withdraw'">
+            {{ tx.transactionType === 'deposit' ? 'Deposited' : 'Withdrawn' }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination controls -->
+  <div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>

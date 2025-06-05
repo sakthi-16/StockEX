@@ -1,0 +1,92 @@
+<app-home></app-home>
+<div style="margin-top:10%">
+<div  class="container mt-4">
+  <h3 class="mb-4">Your Stock Holdings</h3>
+
+  <table class="table table-bordered table-hover text-center align-middle">
+    <thead class="table-danger">
+      <tr>
+        <th>Stock Image</th>
+        <th>Stock Name</th>
+        <th>Stocks Owned</th>
+        <th>Average Price</th>
+        <th>Total Holdings Value</th>
+        <th>Sell</th>
+        <th>Today's Price</th>
+        <th>Growth</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stock of stockList">
+        <td><img [src]="stock.stockImage" [alt]="stock.stockName" width="60" /></td>
+        <td>{{ stock.stockName }}</td>
+        <td>{{ stock.holdingStocks }}</td>
+        <td>{{ stock.avgStockPrice | currency:'INR' }}</td>
+        <td>{{stock.totalHoldingsValue}}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="openSellModal(stock)">Sell</button>
+        </td>
+        <td>{{stock.currentStockPrice}}</td>
+<td [ngSwitch]="stock.growthStatus">
+  <span *ngSwitchCase="'Gain'" style="color: green;">
+    &#x2191; Profit ({{ stock.growthPercentage | number:'1.2-2' }}%)
+  </span>
+  <span *ngSwitchCase="'Loss'" style="color: red;">
+    &#x2193; Loss ({{ stock.growthPercentage | number:'1.2-2' }}%)
+  </span>
+  <span *ngSwitchCase="'No Change'" style="color: rgb(127, 81, 165);">
+    = No Change (0.00%)
+  </span>
+</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+  <!-- Modal Template -->
+ <ng-template #sellModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Sell Stock - {{ selectedStock?.stockName }}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div *ngIf="sellMessage" class="alert"
+         [ngClass]="{ 'alert-success': isSuccessMessage, 'alert-danger': !isSuccessMessage }">
+      {{ sellMessage }}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Number of Stocks</label>
+      <input type="number" class="form-control"
+             [(ngModel)]="sellQuantity"
+             [max]="selectedStock?.holdingStocks"
+             min="1"
+             required
+             (ngModelChange)="validateSellForm()" />
+      <div *ngIf="sellQuantityError === 'invalid'" class="text-danger mt-1">
+        Please enter a positive whole number.
+      </div>
+      <div *ngIf="sellQuantityError === 'exceed'" class="text-danger mt-1">
+        Maximum available: {{ selectedStock?.holdingStocks }}
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Enter PIN</label>
+      <input type="password" class="form-control"
+             [(ngModel)]="enteredSellPin"
+             required />
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button class="btn btn-danger"
+            [disabled]="!formValid"
+            (click)="proceedToSell(modal)">
+      Confirm Sell
+    </button>
+  </div>
+</ng-template>

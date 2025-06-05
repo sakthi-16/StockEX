@@ -1,0 +1,26 @@
+        .col-12{
+            border:1px;
+            height:100vh;
+        
+        }
+        .col-sm-12{
+            height:100vh;
+        }
+        h3{
+            font-size: xx-large;
+            font-weight: 600;
+            text-align: center;
+
+        }
+        .login-box {
+
+            border: 5px;
+            padding:50px Auto;
+            background-color: white; 
+            height: 500px;
+            width:400px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+
+
+        }
+        

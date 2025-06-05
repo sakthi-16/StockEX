@@ -1,0 +1,40 @@
+
+
+         
+  
+        
+        <div class="container-fluid ">
+        <div class="row ">
+                 <div id ="left" class="col-12 col-md-6 d-none d-md-flex col-sm-12 " style="background-color: #065aa9;">
+                    <div class="mt-5">
+                        <h3 class="text-light" style="margin-left:50px;margin-top:40px ">"The biggest risk of all is not taking one."</h3>
+                <br>
+                    <img style="margin-left:90px; margin-top:70px" alt height="300px" width="500px"  src="assets/images/loginLeftimg.png" >
+                    <h4  class="text-light" style=" margin-top:20px ;margin-left:150px">Login to Experience the convenience</h4></div>
+        </div>
+                
+                  <div id="right" class="col-12 col-md-6 col-sm-12 bg-light ps-5 " > 
+                  <div class="login-box p-3 " style="margin: 120px 90px ">  
+
+                    <form (ngSubmit)="onSubmit()">
+                         <div style="margin-left: 105px;"><img  alt height="120px" width="150px" src="assets/images/logoStockEX.jpg"/></div>
+                        <label for="email">Email: </label>
+                        <input type="text" [(ngModel)]="email" name="email" class="form-control" placeholder="Enter UserName">
+                        <br><br>
+                        <label for="password">Password: </label>
+                        <input type="password" [(ngModel)]="password" name="password" placeholder="*********" class="form-control">
+                        <br><br>
+                        <div style="margin-left:120px"> 
+                            <a href="/app-forgot-password">Forgot Password?</a> 
+                        </div><br><br>
+                        <div style="margin:5px;"><button class="form-control" type="submit"style="background-color: #065aa9; color:white">Login</button></div>
+                        
+
+                    </form>
+
+                </div>
+           </div>
+        </div>
+     </div>
+
+

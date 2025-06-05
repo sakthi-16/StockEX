@@ -1,0 +1,13 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.hero {
+  background: linear-gradient(to bottom, rgba(6, 90, 169, 0.6), rgba(6, 90, 169, 0.9)),
+              url('/assets/images/First-img.gif') no-repeat center center;
+  background-size: cover;
+  height: 100vh;
+}
