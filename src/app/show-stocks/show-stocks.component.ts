@@ -4,6 +4,7 @@ import { ShowStocksService } from '../service/show-stocks.service';
 import { HomeComponent } from '../home/home.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NotyfService } from '../service/notyf.service';
 
 @Component({
   selector: 'app-show-stocks',
@@ -25,7 +26,9 @@ export class ShowStocksComponent implements OnInit {
 
   @ViewChild('buyModal') buyModalTemplate: any;
 
-  constructor(private modalService: NgbModal, private stockService: ShowStocksService) {}
+  constructor(private modalService: NgbModal, private stockService: ShowStocksService,
+    private notyf: NotyfService
+  ) {}
 
   ngOnInit(): void {
     this.loadStocks();
@@ -79,12 +82,16 @@ export class ShowStocksComponent implements OnInit {
         this.buyMessage = response.message;
         console.log(response);
         this.isSuccessMessage = true;
+
+        this.notyf.success("stock bought successfully!");
+
         this.loadStocks();
         setTimeout(() => modal.close(), 2000);
       },
       error: (error: any) => {
         this.buyMessage = error.error.message || 'Transaction failed.';
         this.isSuccessMessage = false;
+        this.notyf.error(error.error.message);
       }
     });
   }

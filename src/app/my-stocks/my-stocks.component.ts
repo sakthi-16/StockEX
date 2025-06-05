@@ -4,6 +4,7 @@ import { MyStocksService } from '../service/my-stocks.service';
 import { HomeComponent } from '../home/home.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NotyfService } from '../service/notyf.service';
 
 @Component({
   selector: 'app-sell-stocks',
@@ -20,13 +21,13 @@ export class MyStocksComponent implements OnInit {
   sellMessage: string = '';
   isSuccessMessage: boolean = false;
 
-  // Validation
+  
   sellQuantityError: 'invalid' | 'exceed' | null = null;
   formValid: boolean = false;
 
   @ViewChild('sellModal') sellModalTemplate: any;
 
-  constructor(private modalService: NgbModal, private sellService: MyStocksService) {}
+  constructor(private modalService: NgbModal, private sellService: MyStocksService,private notyf:NotyfService) {}
 
   ngOnInit(): void {
     this.loadUserHoldings();
@@ -78,12 +79,14 @@ export class MyStocksComponent implements OnInit {
       next: (response: any) => {
         this.sellMessage = response.message || 'Stock sold successfully.';
         this.isSuccessMessage = true;
+        this.notyf.success(response.message);
         this.loadUserHoldings();
         setTimeout(() => modal.close(), 2000);
       },
       error: (error: any) => {
         this.sellMessage = error.error.message || 'Transaction failed.';
         this.isSuccessMessage = false;
+         this.notyf.error(error.error.message);
       }
     });
   }

@@ -29,11 +29,12 @@ logout() {
 
   dialogRef.afterClosed().subscribe(result => {
     if (result) {
-      localStorage.removeItem('token');
-      this.router.navigate(['/app-login']);
+     
+       this.loginService.logout();
     }
   });
-  this.loginService.logout();
+  
+ 
   
 }
 

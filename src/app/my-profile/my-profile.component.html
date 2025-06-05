@@ -1,6 +1,7 @@
 <app-home></app-home>
 <div *ngIf="loading">Loading profile...</div>
 
+<!-- greet user-->
 <div style="margin-top:20%" class="profile-box" *ngIf="!loading && profile">
   <h2>Welcome, {{ profile.userName }}</h2>
   <p><strong>Email:</strong> {{ profile.email }}</p>

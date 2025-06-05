@@ -68,7 +68,7 @@
 <div class="modal-footer">
   <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
   <button class="btn btn-success"
-          [disabled]="!formValid"
+          [disabled]="!formValid || buyMessage"
           (click)="proceedToBuy(modal)">
     Confirm Buy
   </button>
