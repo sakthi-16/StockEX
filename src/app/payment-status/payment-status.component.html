@@ -1,0 +1,21 @@
+<!-- payment-status.component.html -->
+<div class="status-container" [ngClass]="status">
+  <div class="icon">
+    <img *ngIf="status === 'success'" src="assets/success-icon.svg" alt="Success" />
+    <img *ngIf="status === 'failure'" src="assets/failure-icon.svg" alt="Failed" />
+  </div>
+
+  <h1>{{ status === 'success' ? 'Payment Successful!' : 'Payment Failed' }}</h1>
+  <p class="message">{{ message }}</p>
+
+  <div class="details">
+    <p><strong>Amount:</strong> ₹{{ amount }}</p>
+    <p><strong>Transaction ID:</strong> {{ transactionId }}</p>
+    <p><strong>Seller Order No:</strong> {{ sellerOrderNo }}</p>
+    <p><strong>Date:</strong> {{ txnDate }}</p>
+    <p><strong>Time:</strong> {{ txnTime }}</p>
+  </div>
+</div>
+<div class="text-center mt-4">
+  <button class="btn btn-primary" routerLink="/app-transaction-status">Go to Transaction Status</button>
+</div>

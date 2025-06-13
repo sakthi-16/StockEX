@@ -1,0 +1,41 @@
+.status-container {
+  text-align: center;
+  max-width: 600px;
+  margin: 8% auto;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.status-container.success {
+  border-left: 8px solid #28a745;
+  background: #e9fbee;
+  color: #155724;
+}
+
+.status-container.failure {
+  border-left: 8px solid #dc3545;
+  background: #fbe9e9;
+  color: #721c24;
+}
+
+.status-container .icon img {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+.status-container h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.status-container .message {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.status-container .details p {
+  font-size: 0.95rem;
+  margin: 5px 0;
+}

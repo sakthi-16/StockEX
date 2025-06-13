@@ -17,10 +17,16 @@ import { AllAccountTransactionsComponent } from './all-account-transaction/all-a
 import { AllStocksTransactionsComponent } from './all-transaction/all-transaction.component';
 import { RecentStocksTransactionsComponent } from './recent-stock-transaction/recent-stock-transaction.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
+import { TransactionStatusComponent } from './transaction-status/transaction-status.component';
+import { AdminNavBarComponent } from './admin-nav-bar/admin-nav-bar.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { AddStockComponent } from './add-stock/add-stock.component';
 
 // Guard imports
 import { AuthGuard } from './auth.guard';
 import { LoggedGuard } from './logged.guard';
+import { PaymentStatusComponent } from './payment-status/payment-status.component';
+import { UpdateStockPriceComponent } from './update-stock-price/update-stock-price.component';
 
 export const routes: Routes = [
   // Public routes - only accessible when NOT logged in
@@ -42,6 +48,12 @@ export const routes: Routes = [
   { path: 'app-all-stocks-transactions', component: AllStocksTransactionsComponent, canActivate: [AuthGuard] },
   { path: 'app-recent-stocks-transactions', component: RecentStocksTransactionsComponent, canActivate: [AuthGuard] },
   { path: 'app-my-profile', component: MyProfileComponent, canActivate: [AuthGuard] },
+  { path: 'app-transaction-status', component: TransactionStatusComponent, canActivate: [AuthGuard] },
+  { path: 'payment-status', component: PaymentStatusComponent,canActivate:[AuthGuard] },
+  { path: 'app-admin-nav-bar', component:AdminNavBarComponent ,canActivate:[AuthGuard] },
+  { path: 'app-admin-home', component:AdminHomeComponent,canActivate:[AuthGuard] },
+  { path: 'app-add-stock', component:AddStockComponent,canActivate:[AuthGuard] },
+  { path: 'app-update-stock', component:UpdateStockPriceComponent,canActivate:[AuthGuard] },
 
   // Fallback
   { path: '**', redirectTo: '', pathMatch: 'full' }

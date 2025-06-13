@@ -1,0 +1,54 @@
+<app-home></app-home>
+
+<div *ngIf="transactions.length > 0; else noTransactions" class="table-container">
+  <div style="margin-top: 10%" class="header-row">
+    <h2>Your Stock Transactions</h2>
+    <div class="sort-dropdown">
+      <label for="sortOrder">Order:</label>
+      <select id="sortOrder" [(ngModel)]="sortOrder" (change)="onSortOrderChange()">
+        <option value="recent">Recent</option>
+        <option value="oldest">Oldest</option>
+      </select>
+    </div>
+  </div>
+
+  <table class="transaction-table">
+    <thead>
+      <tr>
+        <th>Seller Order No</th>
+        <th>Stock Name</th>
+        <th>Quantity</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tx of paginatedTransactions">
+        <td>{{ tx.sellerOrderNo }}</td>
+        <td>{{ tx.stockName }}</td>
+        <td>{{ tx.stockQuantity }}</td>
+        <td>
+          <span class="status-badge" [ngClass]="{
+            'status-success': tx.transactionStatus === 'Success',
+            'status-failure': tx.transactionStatus === 'Failure'
+          }">
+            <ng-container *ngIf="tx.transactionStatus === 'Success'">✅ Success</ng-container>
+            <ng-container *ngIf="tx.transactionStatus === 'Failure'">❌ Failure</ng-container>
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+    <span>Page {{ currentPage }} of {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+  </div>
+</div>
+
+<ng-template #noTransactions>
+  <div class="no-transactions">
+    <img src="https://cdn-icons-png.flaticon.com/512/7486/7486817.png" alt="No Transactions" />
+    <p>No transactions yet!</p>
+  </div>
+</ng-template>

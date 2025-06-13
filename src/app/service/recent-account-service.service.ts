@@ -6,6 +6,7 @@ export interface UserAccountHistoryDTO {
   currentAccountBalance: number;
   amountTransacted: number;
   amountTransactedTime: string;
+  transactionType:string
 }
 
 @Injectable({

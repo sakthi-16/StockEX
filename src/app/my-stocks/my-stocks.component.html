@@ -22,11 +22,11 @@
         <td>{{ stock.stockName }}</td>
         <td>{{ stock.holdingStocks }}</td>
         <td>{{ stock.avgStockPrice | currency:'INR' }}</td>
-        <td>{{stock.totalHoldingsValue}}</td>
+        <td>{{stock.totalHoldingsValue | currency:'INR'}}</td>
         <td>
           <button class="btn btn-danger btn-sm" (click)="openSellModal(stock)">Sell</button>
         </td>
-        <td>{{stock.currentStockPrice}}</td>
+        <td>{{stock.currentStockPrice | currency:'INR'}}</td>
 <td [ngSwitch]="stock.growthStatus">
   <span *ngSwitchCase="'Gain'" style="color: green;">
     &#x2191; Profit ({{ stock.growthPercentage | number:'1.2-2' }}%)

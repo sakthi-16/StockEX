@@ -5,6 +5,8 @@ import { SignupService } from '../service/signup-service.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { NotyfService } from '../service/notyf.service';
+
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +20,7 @@ export class SignupComponent implements OnInit {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private fb: FormBuilder, private signupService: SignupService, private router: Router) {}
+  constructor(private fb: FormBuilder, private signupService: SignupService, private router: Router,  private notyf: NotyfService) {}
 
   ngOnInit(): void {
     this.signupForm = this.fb.group({
@@ -56,17 +58,18 @@ export class SignupComponent implements OnInit {
       const formData = this.signupForm.value;
       this.signupService.registerUser(formData).subscribe({
         next: (response) => {
-          this.successMessage = response;
+          this.successMessage = response.message;
           this.errorMessage = '';
           localStorage.setItem('isNewUser', 'true');
           setTimeout(() => {
             this.router.navigate(['/app-login']); 
           }, 2000);
         },
-        error: (error) => {
-          this.errorMessage = error.message.error || 'An error occurred during signup.';
-          this.successMessage = '';
-        }
+    error: (error: any) => {
+  console.log(error.error.message);
+  this.errorMessage = error.error.message || 'An error occurred during signup.';
+  this.successMessage = '';
+}
       });
     } else {
       this.signupForm.markAllAsTouched();

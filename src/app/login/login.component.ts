@@ -3,11 +3,12 @@ import { LoginService } from '../service/login.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NotyfService } from '../service/notyf.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule,],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -17,39 +18,42 @@ export class LoginComponent {
 
   constructor(
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private notyf: NotyfService
   ) {}
 
- onSubmit() {
-  if (this.email && this.password) {
-    this.loginService.login({ email: this.email, password: this.password }).subscribe({
-      next: (response) => {
-        const token = response?.token;
+  onSubmit() {
+    if (this.email && this.password) {
+      this.loginService.login({ email: this.email, password: this.password }).subscribe({
+        next: (response) => {
+          const token = response?.token;
 
-        if (token) {
-          this.loginService.saveToken(token);
+          if (token) {
+            this.loginService.saveToken(token);
 
-          const isNewUser = localStorage.getItem('isNewUser');
-          if (isNewUser === 'true') {
            
-            localStorage.removeItem('isNewUser'); 
-            this.router.navigate(['/app-account-addition']);
+            if (this.email === 'snsakthi16@gmail.com') {
+              this.router.navigate(['/app-update-stock']); 
+            } else {
+              const isNewUser = localStorage.getItem('isNewUser');
+              if (isNewUser === 'true') {
+                localStorage.removeItem('isNewUser');
+                this.router.navigate(['/app-account-addition']);
+              } else {
+                this.router.navigate(['/app-show-stocks']);
+              }
+            }
           } else {
-           
-            this.router.navigate(['/app-show-stocks']); 
+            console.warn("No token received in response.");
           }
-        } else {
-          console.warn("No token received in response.");
+        },
+        error: (error: any) => {
+          this.notyf.error(error.error.error);
+          console.error("Login failed:", error);
         }
-      },
-      error: (error) => {
-        console.error("Login failed:", error);
-        alert("Invalid credentials or server error.");
-      }
-    });
-  } else {
-    alert("Please enter both email and password.");
+      });
+    } else {
+      this.notyf.error("Please enter both email and password.");
+    }
   }
-}
-
 }

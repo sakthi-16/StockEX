@@ -11,3 +11,7 @@ body, html {
   background-size: cover;
   height: 100vh;
 }
+a.btn:hover {
+  background-color: rgb(20, 168, 20) !important;
+  color: white !important;
+}

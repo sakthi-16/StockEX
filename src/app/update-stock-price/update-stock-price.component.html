@@ -1,0 +1,47 @@
+<app-admin-nav-bar></app-admin-nav-bar>
+<div style="margin-top: 10%;">
+<div class="container mt-5">
+  <h2 class="mb-4">Manage Stocks</h2>
+  <table class="table table-hover table-bordered text-center">
+    <thead class="table-primary">
+      <tr>
+        <th>Stock Image</th>
+        <th>Stock Name</th>
+        <th>Declared Value</th>
+        <th>Total Stocks</th>
+        <th>Current Price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stock of stockList">
+        <td><img [src]="stock.stocksImage" width="50" alt="Stock Image" /></td>
+        <td>{{ stock.stockName }}</td>
+        <td>{{ stock.stocksDeclared }}</td>
+        <td>{{ stock.totalStocks }}</td>
+        <td>{{ stock.stockPrice }}</td>
+        <td>
+          <button class="btn btn-success" (click)="openUpdateModal(updateModal, stock)">Update</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 🔧 Update Price Modal -->
+<ng-template #updateModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Update Price - {{ selectedStock?.stockName }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <p><strong>Current Price:</strong> ₹{{ selectedStock?.stockPrice }}</p>
+    <label for="newPrice" class="form-label">Enter New Price</label>
+    <input type="number" class="form-control" [(ngModel)]="newPrice" min="1" required />
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+    <button class="btn btn-primary" (click)="updateStock(modal)">Confirm Update</button>
+  </div>
+</ng-template>
+</div>

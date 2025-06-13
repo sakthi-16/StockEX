@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface UserAccountHistoryDTO {
-  currentAccountBalance: number;
-  amountTransacted: number;
-  amountTransactedTime: string;
-  transactionType:string
+export interface TransactionStatusDTO {
+  sellerOrderNo: string;
+  stockName: string;
+  stockQuantity: number;
+  transactionStatus: 'Success' | 'Failure';
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class AllAccountService {
+export class TransactionStatusService {
   private baseUrl = 'http://localhost:8080/api/users';
 
   constructor(private http: HttpClient) {}
@@ -24,8 +24,8 @@ export class AllAccountService {
     });
   }
 
-  getRecentTransactions(): Observable<UserAccountHistoryDTO[]> {
-    return this.http.get<UserAccountHistoryDTO[]>(`${this.baseUrl}/allAccountTransactions`, {
+  getTransactionStatus(): Observable<TransactionStatusDTO[]> {
+    return this.http.get<TransactionStatusDTO[]>(`${this.baseUrl}/transaction-status`, {
       headers: this.getAuthHeaders(),
       withCredentials: true
     });

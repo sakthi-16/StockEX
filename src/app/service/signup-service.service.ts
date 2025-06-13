@@ -10,7 +10,7 @@ export class SignupService {
 
   constructor(private http: HttpClient) {}
 
-  registerUser(data: any): Observable<string> {
-    return this.http.post(this.apiUrl, data, { responseType: 'text' });
+  registerUser(data: any): Observable<any> {
+    return this.http.post(this.apiUrl, data);
   }
 }

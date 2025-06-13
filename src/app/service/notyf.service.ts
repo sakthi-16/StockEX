@@ -25,6 +25,6 @@ export class NotyfService {
   }
  
   error(message: string): void {
-    this.notyf.error(message);
+    this.notyf.error(message );
   }
 }

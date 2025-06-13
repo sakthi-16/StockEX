@@ -1,0 +1,33 @@
+<app-admin-nav-bar></app-admin-nav-bar>
+<div style="margin-top:10%">
+<div class="add-stock-container">
+  <h2>Add New Stock</h2>
+
+  <form (ngSubmit)="onSubmit()" #stockForm="ngForm">
+    <div class="form-group">
+      <label for="stockName">Stock Name</label>
+      <input type="text" id="stockName" [(ngModel)]="stock.stockName" name="stockName" required />
+    </div>
+
+    <div class="form-group">
+      <label for="stocksImage">Stock Image URL</label>
+      <input type="text" id="stocksImage" [(ngModel)]="stock.stocksImage" name="stocksImage" required />
+    </div>
+
+    <div class="form-group">
+      <label for="stocksDeclared">Stocks Declared (₹)</label>
+      <input type="number" id="stocksDeclared" [(ngModel)]="stock.stocksDeclared" name="stocksDeclared" min="1" required />
+    </div>
+
+    <div class="form-group">
+      <label for="totalStocks">Total Stocks</label>
+      <input type="number" id="totalStocks" [(ngModel)]="stock.totalStocks" name="totalStocks" min="1" required />
+    </div>
+
+    <button type="submit" [disabled]="stockForm.invalid">Add Stock</button>
+  </form>
+
+  <!-- <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div> -->
+</div>
+</div>

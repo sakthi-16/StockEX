@@ -51,18 +51,8 @@ export class AllAccountTransactionsComponent implements OnInit {
     }
   }
 
-  
-  getTransactionTypeClass(tx: UserAccountHistoryDTO, index: number): string {
-    const absoluteIndex = (this.currentPage - 1) * this.itemsPerPage + index;
+  getTransactionTypeClass(tx: UserAccountHistoryDTO): string {
+  return tx.transactionType === 'deposit' ? 'deposit' : 'withdraw';
+}
 
-    if (absoluteIndex + 1 < this.transactions.length) {
-      const nextTx = this.transactions[absoluteIndex + 1];
-      const currentBalance = tx.currentAccountBalance;
-      const previousBalance = nextTx.currentAccountBalance;
-
-      return currentBalance > previousBalance ? 'deposit' : 'withdraw';
-    }
-
-    return 'deposit';
-  }
 }

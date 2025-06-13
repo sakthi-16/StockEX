@@ -1,10 +1,6 @@
-
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-
 <div class="row container-fluid">
   <div class="col-12 bg-light">
-    <form [formGroup]="accountForm" class="signup-box px-5 py-1" style="margin-top:60px; margin-left:470px;" (ngSubmit)="submitAccountForm()">
+    <form [formGroup]="accountForm" class="signup-box px-3 py-4 mx-auto my-5" (ngSubmit)="submitAccountForm()">
       <h3 style="text-align: center;">
         <img alt="logo" height="120px" width="150px" src="assets/images/logoStockEX.jpg" />
       </h3>
@@ -23,15 +19,16 @@
 
       <label for="pin">PIN:</label>
       <input type="password" id="pin" class="form-control" formControlName="accountPassword" placeholder="*********" required />
+      <br>
+     <div *ngIf="popupMessage" class="alert" [ngClass]="{'alert-success': popupSuccess, 'alert-danger': !popupSuccess}" role="alert" style="width: 400px; margin: auto; text-align: center;">
+  {{ popupMessage }}
+</div><br>
+      <button type="submit" class="btn text-white" style="margin-left:190px; background-color: #065aa9;">Confirm</button>
       <br><br>
 
-      <button type="submit" class="btn text-white" style="margin-left:170px; background-color: #065aa9;">Confirm</button>
-      <br><br>
+
     </form>
   </div>
 </div>
 
-<!-- Toast-style popup message -->
-<div *ngIf="popupMessage" class="alert" [ngClass]="{'alert-success': popupSuccess, 'alert-danger': !popupSuccess}" role="alert" style="width: 500px; margin: auto; text-align: center;">
-  {{ popupMessage }}
-</div>
+
