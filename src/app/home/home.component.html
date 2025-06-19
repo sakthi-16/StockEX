@@ -67,7 +67,40 @@
                 </div>
             </div>
 
-                <button type="button" class="btn text-white " style="margin-left:500px" (click)="logout()">Logout</button>
+            <!-- 🟦 FAVOURITES DROPDOWN -->
+<div class="btn-group text-white" role="group">
+  <button
+    id="favouritesDropdownId"
+    type="button"
+    class="btn text-white dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+    (click)="loadFavourites()"
+  >
+    Favourites
+  </button>
+  <div class="dropdown-menu" aria-labelledby="favouritesDropdownId">
+    <ng-container *ngIf="favouriteCollections.length; else noFavourites">
+<a
+  class="dropdown-item"
+  *ngFor="let collection of favouriteCollections"
+  [routerLink]="['/favourites', collection]"
+>
+  {{ collection }}
+</a>
+
+
+    </ng-container>
+    <ng-template #noFavourites>
+      <span class="dropdown-item text-muted">No favourites yet. Create Collection ➡️</span>
+    </ng-template>
+  </div>
+</div>
+
+
+
+                <button type="button" class="btn text-white " style="margin-left:350px" (click)="logout()">Logout</button>
             
         </div>
 
@@ -75,6 +108,9 @@
 
     </div>
 </nav>
+
+
+
 
 
        

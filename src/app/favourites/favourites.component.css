@@ -1,0 +1,17 @@
+.strong-positive {
+  color: #0f9d58;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.strong-negative {
+  color: #d93025;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.neutral {
+  color: #5f6368;
+  font-weight: bold;
+  font-size: 1.1rem;
+}

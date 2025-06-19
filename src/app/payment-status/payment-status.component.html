@@ -1,8 +1,8 @@
 <!-- payment-status.component.html -->
 <div class="status-container" [ngClass]="status">
   <div class="icon">
-    <img *ngIf="status === 'success'" src="assets/success-icon.svg" alt="Success" />
-    <img *ngIf="status === 'failure'" src="assets/failure-icon.svg" alt="Failed" />
+    <img *ngIf="status === 'success'" src="assets/images/success-icon.webp" alt="Success" />
+    <img *ngIf="status === 'failure'" src="assets/images/failure-icon.png" alt="Failed" />
   </div>
 
   <h1>{{ status === 'success' ? 'Payment Successful!' : 'Payment Failed' }}</h1>

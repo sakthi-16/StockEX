@@ -5,6 +5,9 @@ import { NotyfService } from '../service/notyf.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from '../home/home.component';
+import { TemplateRef } from '@angular/core';
+import { NgZone } from '@angular/core';
+
 
 interface Bank {
   bankCode: string;
@@ -48,6 +51,13 @@ export class ShowStocksComponent implements OnInit {
   merchantName: string = ' ';
   merchantEmail: string = '';
   buyerName: string = '';
+
+    successMessage:string ='';
+    errorMessage:string='';
+
+
+
+
  
   
   private buyModalRef: NgbModalRef | null = null;
@@ -62,10 +72,13 @@ export class ShowStocksComponent implements OnInit {
   @ViewChild('confirmModal') confirmModalTemplate: any;
   @ViewChild('taxesModal') taxesModalTemplate: any;
 
+ 
   constructor(
     private modalService: NgbModal,
     private stockService: ShowStocksService,
-    private notyf: NotyfService
+    private notyf: NotyfService,
+    private ngZone: NgZone
+
   ) {}
 
   ngOnInit(): void {
@@ -230,6 +243,101 @@ export class ShowStocksComponent implements OnInit {
     this.selectedBank?.bankCode?.trim() !== ''
   );
 }
+
+
+@ViewChild('collectionDropdownModal') collectionDropdownModalRef: any;
+
+selectedStockk: any = null;
+favouriteCollections: string[] = [];
+selectedCollection: string = '';
+
+
+
+openCollectionDropdownModal(stock: any) {
+  this.selectedStockk = stock;
+ 
+  this.selectedCollection = '';
+
+  this.stockService.getUserCollections().subscribe(
+    (res: string[]) => {
+      this.favouriteCollections = res || [];
+      this.modalService.open(this.collectionDropdownModalRef);
+    },
+    err => {
+      this.favouriteCollections = [];
+      this.modalService.open(this.collectionDropdownModalRef);
+    }
+  );
+}
+
+addToCollection(collectionName: string, modal: any) {
+  const payload = {
+    stockName: this.selectedStockk?.stockName,
+    collectionName: collectionName,
+     stockPriceWhenAdded: this.selectedStockk?.stockPrice
+  };
+ console.log('Payload:', payload);
+  // You can implement this API call in your service
+this.stockService.addStockToCollection(payload).subscribe(
+  (response) => {
+    console.log(this.selectedStockk.stockPrice);
+    console.log('Response from backend:', response);
+    // Optionally, use the response to update UI or notify the user
+    this.successMessage = ` ${response.message || 'Success'}`;
+     this.notyf.success(this.successMessage);
+    modal.close();  // Or keep open if you want to show success before closing
+  },
+  (err:any) => {
+   
+    console.error("Error adding to collection", err);
+    this.errorMessage = err?.error?.message || 'Something went wrong!';
+     this.notyf.error(this.errorMessage);
+  }
+);
+
+}
+
+
+
+
+
+
+
+newCollectionName: string = '';
+
+@ViewChild('createCollectionModal') createCollectionModal!: TemplateRef<any>;
+
+openCreateCollectionModal() {
+  this.newCollectionName = ''; // reset field
+  this.modalService.open(this.createCollectionModal);
+}
+
+submitNewCollection(modalRef: NgbModalRef) {
+  const trimmed = this.newCollectionName.trim();
+  if (!trimmed) return;
+
+  this.stockService.createNewCollection(trimmed).subscribe({
+    next: (res) => {
+      this.favouriteCollections.push(trimmed);
+      this.notyf.success(res.message);
+      modalRef.close();
+    },
+    error: err => {
+      this.notyf.error(err.error.message);
+      console.error('Error creating collection:', err);
+    }
+  });
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

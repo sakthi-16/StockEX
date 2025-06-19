@@ -5,6 +5,7 @@ import { LoginService } from '../service/login.service';
 import { CommonModule } from '@angular/common';
 
 import { AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import { NotyfService } from '../service/notyf.service';
 
 export const passwordMatchValidator: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
   const password = group.get('newPassword')?.value;
@@ -27,7 +28,8 @@ export class ResetPasswordComponent {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private notyf: NotyfService
   ) {
 this.resetForm = this.fb.group({
   email: [{ value: '', disabled: true }, Validators.required],
@@ -52,12 +54,12 @@ this.resetForm = this.fb.group({
   const { newPassword } = this.resetForm.getRawValue();
   const { confirmPassword } = this.resetForm.getRawValue();  // includes disabled email
   this.loginService.resetPassword(this.email, newPassword,confirmPassword).subscribe({
-    next: () => {
-      alert('Password reset successful');
+    next: (res) => {
+      this.notyf.success(res.message);
       this.router.navigate(['/app-login']);
     },
-    error: () => {
-      alert('Reset failed. Try again.');
+    error: (err) => {
+      this.notyf.error(err.error.message);
       this.router.navigate(['/app-forgot-password']);
     }
   });

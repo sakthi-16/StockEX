@@ -1,11 +1,16 @@
 <app-home></app-home>
 
 <div class="container" style="margin-top: 10%;">
-  <h3 class="mb-4">Available Stocks</h3>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+  <h3 class="mb-0">Available Stocks</h3>
+  <button class="btn btn-success" (click)="openCreateCollectionModal()">+ Create Collection</button>
+</div>
+
 
   <table class="table table-bordered table-hover text-center align-middle">
     <thead class="table-success">
       <tr>
+        <th>Add To Favourites</th>
         <th>Stock Image</th>
         <th>Stock Name</th>
         <th>Stock Price</th>
@@ -15,6 +20,12 @@
     </thead>
     <tbody>
       <tr *ngFor="let stock of stockList">
+<td>
+  <button class="btn btn-outline-danger btn-sm" (click)="openCollectionDropdownModal(stock)">❤️</button>
+</td>
+
+
+
         <td><img [src]="stock.stocksImage" [alt]="stock.stockName" width="60" /></td>
         <td>{{ stock.stockName }}</td>
         <td>{{ stock.stockPrice | currency: 'INR' }}</td>
@@ -159,6 +170,67 @@
       <button class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
     </div>
   </ng-template>
+
+<ng-template #collectionDropdownModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add to Collection - {{ selectedStockk?.stockName }}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <!-- Dropdown for Collections -->
+    <div class="mb-3">
+      <label class="form-label">Choose a Collection</label>
+      <select class="form-select" [(ngModel)]="selectedCollection">
+        <option value="" disabled selected>Select a collection</option>
+        <option *ngFor="let col of favouriteCollections" [value]="col">
+          {{ col }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+<div class="modal-footer d-flex justify-content-between align-items-center">
+  <!--  Bottom-left: Create Collection -->
+<button class="btn btn-success" (click)="openCreateCollectionModal()">+ Create Collection</button>
+
+
+  <!--  Bottom-right: Cancel and Add -->
+  <div>
+    <button class="btn btn-secondary me-2" (click)="modal.dismiss()">Cancel</button>
+    <button class="btn btn-primary" [disabled]="!selectedCollection" (click)="addToCollection(selectedCollection, modal)">
+      Add
+    </button>
+  </div>
+</div>
+
+</ng-template>
+
+<!-- Create Collection Modal -->
+<ng-template #createCollectionModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Create New Collection</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <input
+      type="text"
+      class="form-control"
+      [(ngModel)]="newCollectionName"
+      placeholder="Enter collection name" />
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+<button class="btn btn-primary" (click)="submitNewCollection(modal)" [disabled]="!newCollectionName || !newCollectionName.trim()">Create</button>
+  </div>
+</ng-template>
+
+
+
+
+
 
   <form #paymentform [action]="fpxUrl" method="POST" style="display:none" id="fpxForm">
     <input type="hidden" name="amount" [value]=" confirmData?.amountToPay?.toFixed(2)" />

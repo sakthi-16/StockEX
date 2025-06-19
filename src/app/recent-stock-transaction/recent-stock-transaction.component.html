@@ -18,7 +18,7 @@
         <td [ngClass]="tx.transactionType === 'deposit' ? 'came-in' : 'gone-out'">
           ₹{{ tx.amountCameInOrGoneOut }}
           <span class="badge" [ngClass]="tx.transactionType === 'deposit' ? 'badge-deposit' : 'badge-withdraw'">
-            {{ tx.transactionType === 'deposit' ? 'Deposited' : 'Withdrawn' }}
+            {{ tx.transactionType === 'deposit' ? 'Sold' : 'Bought' }}
           </span>
         </td>
       </tr>

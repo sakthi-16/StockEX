@@ -27,6 +27,7 @@ import { AuthGuard } from './auth.guard';
 import { LoggedGuard } from './logged.guard';
 import { PaymentStatusComponent } from './payment-status/payment-status.component';
 import { UpdateStockPriceComponent } from './update-stock-price/update-stock-price.component';
+import { FavouritesComponent } from './favourites/favourites.component';
 
 export const routes: Routes = [
   // Public routes - only accessible when NOT logged in
@@ -54,6 +55,9 @@ export const routes: Routes = [
   { path: 'app-admin-home', component:AdminHomeComponent,canActivate:[AuthGuard] },
   { path: 'app-add-stock', component:AddStockComponent,canActivate:[AuthGuard] },
   { path: 'app-update-stock', component:UpdateStockPriceComponent,canActivate:[AuthGuard] },
+  {
+  path: 'favourites/:collectionName',component: FavouritesComponent,canActivate:[AuthGuard]},
+
 
   // Fallback
   { path: '**', redirectTo: '', pathMatch: 'full' }
