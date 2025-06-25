@@ -10,7 +10,7 @@
   <table class="table table-bordered table-hover text-center align-middle">
     <thead class="table-success">
       <tr>
-        <th>Add To Favourites</th>
+        <th>Add To Favourites </th>
         <th>Stock Image</th>
         <th>Stock Name</th>
         <th>Stock Price</th>
@@ -21,14 +21,14 @@
     <tbody>
       <tr *ngFor="let stock of stockList">
 <td>
-  <button class="btn btn-outline-danger btn-sm" (click)="openCollectionDropdownModal(stock)">❤️</button>
+  <button title="click to add this to a collection." class="btn btn-outline-danger btn-sm" (click)="openCollectionDropdownModal(stock)">❤️</button>
 </td>
 
 
 
         <td><img [src]="stock.stocksImage" [alt]="stock.stockName" width="60" /></td>
         <td>{{ stock.stockName }}</td>
-        <td>{{ stock.stockPrice | currency: 'INR' }}</td>
+        <td><strong>{{ stock.stockPrice | currency: 'INR' }}</strong></td>
         <td>{{ stock.totalStocks }}</td>
         <td>
           <button class="btn btn-primary btn-sm" (click)="openBuyModal(stock)">Buy</button>

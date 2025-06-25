@@ -157,7 +157,7 @@ export class ShowStocksComponent implements OnInit {
         this.loadStocks();
       },
       error: (error: any) => {
-        this.buyMessage = error.error?.message || 'Transaction failed.';
+        this.buyMessage = error.error.message || 'Transaction failed.';
         this.isSuccessMessage = false;
         this.notyf.error(this.buyMessage);
       },

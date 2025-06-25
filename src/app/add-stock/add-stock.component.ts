@@ -41,4 +41,11 @@ export class AddStockComponent {
       }
     });
   }
+  preventDecimalInput(event: KeyboardEvent): void {
+  const invalidChars = ['.', ',', 'e', 'E', '+', '-'];
+  if (invalidChars.includes(event.key)) {
+    event.preventDefault();
+  }
+}
+
 }

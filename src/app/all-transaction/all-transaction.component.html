@@ -1,6 +1,6 @@
 <app-home></app-home>
 
-<div style="margin-top:10%" class="table-container" *ngIf="paginatedData.length > 0">
+<div style="margin-top:10%" class="table-container" *ngIf="paginatedData.length > 0; else noTransactions">
   <h2>Stock Transactions</h2>
   <table class="transaction-table">
     <thead>
@@ -31,3 +31,11 @@
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
   </div>
 </div>
+
+<!-- Centered No-Transaction Template -->
+<ng-template #noTransactions>
+  <div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 60vh;">
+    <img src="assets/images/no-data.jpg" width="300" alt="No stock transactions found" />
+    <p class="mt-3 text-muted">No stock transactions found.</p>
+  </div>
+</ng-template>

@@ -22,38 +22,47 @@ export class LoginComponent {
     private notyf: NotyfService
   ) {}
 
-  onSubmit() {
-    if (this.email && this.password) {
-      this.loginService.login({ email: this.email, password: this.password }).subscribe({
-        next: (response) => {
-          const token = response?.token;
+ onSubmit() {
+  if (this.email && this.password) {
+    this.loginService.login({ email: this.email, password: this.password }).subscribe({
+      next: (response) => {
+        const token = response?.token;
+        const isLinkedAccount = response?.isLinkedAccount;
 
-          if (token) {
-            this.loginService.saveToken(token);
+        if (token) {
+          this.loginService.saveToken(token);
 
-           
-            if (this.email === 'snsakthi16@gmail.com') {
-              this.router.navigate(['/app-update-stock']); 
-            } else {
-              const isNewUser = localStorage.getItem('isNewUser');
-              if (isNewUser === 'true') {
-                localStorage.removeItem('isNewUser');
-                this.router.navigate(['/app-account-addition']);
-              } else {
-                this.router.navigate(['/app-show-stocks']);
-              }
-            }
+          // Optionally store this if needed later
+          localStorage.setItem('isLinkedAccount', isLinkedAccount ? 'true' : 'false');
+
+          if (this.email === 'snsakthi16@gmail.com') {
+            this.router.navigate(['/app-update-stock']);
           } else {
-            console.warn("No token received in response.");
+            const isNewUser = localStorage.getItem('isNewUser');
+
+            if (isNewUser === 'true') {
+              localStorage.removeItem('isNewUser');
+              this.router.navigate(['/app-account-addition']);
+            } else if (!isLinkedAccount) {
+              // Not linked yet, force account addition
+              this.router.navigate(['/app-account-addition']);
+            } else {
+              // Normal flow
+              this.router.navigate(['/app-show-stocks']);
+            }
           }
-        },
-        error: (error: any) => {
-          this.notyf.error(error.error.error);
-          console.error("Login failed:", error);
+        } else {
+          console.warn("No token received in response.");
         }
-      });
-    } else {
-      this.notyf.error("Please enter both email and password.");
-    }
+      },
+      error: (error: any) => {
+        this.notyf.error(error.error.error);
+        console.error("Login failed:", error);
+      }
+    });
+  } else {
+    this.notyf.error("Please enter both email and password.");
   }
+}
+
 }

@@ -10,7 +10,7 @@ import { NotyfService } from '../service/notyf.service';
   selector: 'app-update-stock',
   standalone: true,
   imports: [CommonModule, FormsModule, AdminNavBarComponent],
-  providers: [UpdateStockService], // ✅ ADD THIS
+  providers: [UpdateStockService], 
   templateUrl: './update-stock-price.component.html',
   styleUrls: ['./update-stock-price.component.css']
 })
@@ -19,7 +19,7 @@ export class UpdateStockPriceComponent implements OnInit {
   selectedStock: any = null;
   newPrice: number = 0;
 
-  // ✅ Use inject() when using standalone components and no constructor
+  //  Use inject() when using standalone components and no constructor
   private stockService = inject(UpdateStockService);
   private modalService = inject(NgbModal);
 
@@ -45,7 +45,30 @@ export class UpdateStockPriceComponent implements OnInit {
   }
 
   updateStock(modalRef: any): void {
-    if (!this.newPrice || this.newPrice <= 0) return;
+   if (this.newPrice === undefined) {
+  this.notyf.error("Update quantity is undefined. Please provide a valid number.");
+  return;
+}
+
+if (this.newPrice === null) {
+  this.notyf.error("Update quantity is null. Please enter a valid value.");
+  return;
+}
+
+// if (this.newPrice === '') {
+//   this.notyf.error("Update quantity is empty. Please fill in the quantity.");
+//   return;
+// }
+
+if (this.newPrice === 0) {
+  this.notyf.error("Update quantity cannot be zero. Enter a number greater than 0.");
+  return;
+}
+
+if (this.newPrice < 0) {
+  this.notyf.error("Negative quantity is not allowed. Enter a positive number.");
+  return;
+}
 
     const updateData = {
       stockName: this.selectedStock.stockName,

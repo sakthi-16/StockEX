@@ -52,7 +52,7 @@ export class FavouritesComponent implements OnInit {
           console.log("Show empty modal?", stocks.length === 0);
           this.collectionStocks = stocks;
 
-          // ✅ Delay modal check to next change detection cycle
+          //  Delay modal check to next change detection cycle
           setTimeout(() => {
             if (this.collectionStocks.length === 0) {
               this.showDeleteEmptyCollectionModal = true;
@@ -105,12 +105,12 @@ proceedToHome(): void {
       this.collectionStocks = this.collectionStocks.filter(s => s.stockName !== stockName);
       this.recentlyRemovedStockName = stockName;
 
-      // ✅ Show undo stock modal
+      //  Show undo stock modal
       setTimeout(() => {
         this.showUndoStockModal = true;
       }, 0);
 
-      // ✅ Check if now the list is empty, show delete confirmation
+      //  Check if now the list is empty, show delete confirmation
       if (this.collectionStocks.length === 0) {
         setTimeout(() => {
           this.showDeleteEmptyCollectionModal = true;
@@ -132,7 +132,7 @@ proceedToHome(): void {
     next: (res) => {
       this.notyf.success(res.message || 'Stock restored.');
       this.showUndoStockModal = false;
-      this.recentlyRemovedStockName = ''; // ✅ Reset so heart becomes red
+      this.recentlyRemovedStockName = ''; //  Reset so heart becomes red
       this.ngOnInit();
     },
     error: () => this.notyf.error('Failed to restore stock.')

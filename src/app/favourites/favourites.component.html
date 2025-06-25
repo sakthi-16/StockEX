@@ -9,7 +9,7 @@
     <table class="table table-bordered text-center align-middle">
       <thead class="table-info">
         <tr>
-          <th>Favourites</th> 
+          <th>Remove Favourites</th> 
           <th>Image</th>
           <th>Stock Name</th>
           <th>Quantity</th>
@@ -23,6 +23,7 @@
           <td>
             <button 
               class="btn btn-sm" 
+              title="click to remove from favourites"
               [ngClass]="{'btn-danger': recentlyRemovedStockName !== stock.stockName, 'btn-outline-light text-dark': recentlyRemovedStockName === stock.stockName}"
               (click)="removeStock(stock.stockName)">
               🤍
@@ -77,7 +78,7 @@
         <h5 class="modal-title">Undo Stock Removal</h5>
       </div>
       <div class="modal-body">
-        <p>Would you like the <strong>{{recentlyRemovedStockName}}</strong> stock to return to {{ collectionName }}? If you click <strong>No</strong> the stock will be removed <strong>permanently.</strong></p>
+        <p>Would you like the <strong>{{recentlyRemovedStockName}}</strong> stock to return to {{ collectionName }}? If you click <strong>No</strong> the stock will be <strong>removed permanently.</strong></p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-success" (click)="undoDeletedStock()">Yes,restore</button>
@@ -118,7 +119,7 @@
         <h5 class="modal-title">Undo Collection Removal</h5>
       </div>
       <div class="modal-body">
-        <p>Would you like to restore the collection "{{ collectionName }}"? If you click <strong>No</strong> collection will be removed <strong>permanently.</strong></p>
+        <p>Would you like to restore the collection "{{ collectionName }}"? If you click <strong>No</strong> collection will be <strong>removed permanently.</strong></p>
       </div>
       <div class="modal-footer">
         <button class="btn btn-success" (click)="undoCollection()">Yes, Undo</button>

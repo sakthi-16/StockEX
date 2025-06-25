@@ -10,11 +10,14 @@ export class LoginService {
 
   constructor(private http: HttpClient,private router: Router) {}
 
-  login(credentials: { email: string; password: string }): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.baseUrl}/login`, credentials, {
-      observe: 'body'
-    });
-  }
+  login(credentials: { email: string; password: string }): Observable<{ token: string, isLinkedAccount: boolean }> {
+  return this.http.post<{ token: string, isLinkedAccount: boolean }>(
+    `${this.baseUrl}/login`,
+    credentials,
+    { observe: 'body' }
+  );
+}
+
 
   saveToken(token: string) {
     localStorage.setItem('token', token);

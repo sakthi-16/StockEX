@@ -6,29 +6,42 @@
       </h3>
 
       <label for="email">Email:</label>
-      <input type="email" id="email" class="form-control" formControlName="userMail" placeholder="Enter your email" required />
-      <br><br>
+      <input type="email" id="email" class="form-control" formControlName="userMail" placeholder="Enter your email" />
+      <div *ngIf="accountForm.get('userMail')?.touched && accountForm.get('userMail')?.invalid" class="text-danger">
+        <div *ngIf="accountForm.get('userMail')?.errors?.['required']">Email is required.</div>
+        <div *ngIf="accountForm.get('userMail')?.errors?.['email']">Enter a valid email.</div>
+      </div>
+      <br>
 
       <label for="bankName">Bank Name:</label>
-      <input type="text" id="bankName" class="form-control" formControlName="userBankAccount" placeholder="Bank Name" required />
-      <br><br>
+      <input type="text" id="bankName" class="form-control" formControlName="userBankAccount" placeholder="Bank Name" />
+      <div *ngIf="accountForm.get('userBankAccount')?.touched && accountForm.get('userBankAccount')?.invalid" class="text-danger">
+        Bank name is required.
+      </div>
+      <br>
 
       <label for="accountBalance">Account Balance:</label>
-      <input type="number" id="accountBalance" step="0.01" class="form-control" formControlName="userAccountBalance" placeholder="Enter Balance" required />
-      <br><br>
+      <input type="number" id="accountBalance" step="0.01" class="form-control" formControlName="userAccountBalance" placeholder="Enter Balance" />
+      <div *ngIf="accountForm.get('userAccountBalance')?.touched && accountForm.get('userAccountBalance')?.invalid" class="text-danger">
+        <div *ngIf="accountForm.get('userAccountBalance')?.errors?.['required']">Account balance is required.</div>
+        <div *ngIf="accountForm.get('userAccountBalance')?.errors?.['min']">Balance must be 0 or more.</div>
+      </div>
+      <br>
 
       <label for="pin">PIN:</label>
-      <input type="password" id="pin" class="form-control" formControlName="accountPassword" placeholder="*********" required />
+      <input type="password" id="pin" class="form-control" formControlName="accountPassword" placeholder="*********" />
+      <div *ngIf="accountForm.get('accountPassword')?.touched && accountForm.get('accountPassword')?.invalid" class="text-danger">
+        PIN is required.
+      </div>
       <br>
-     <div *ngIf="popupMessage" class="alert" [ngClass]="{'alert-success': popupSuccess, 'alert-danger': !popupSuccess}" role="alert" style="width: 400px; margin: auto; text-align: center;">
-  {{ popupMessage }}
-</div><br>
+
+      <div *ngIf="popupMessage" class="alert" [ngClass]="{'alert-success': popupSuccess, 'alert-danger': !popupSuccess}" role="alert" style="width: 400px; margin: auto; text-align: center;">
+        {{ popupMessage }}
+      </div>
+      <br>
+
       <button type="submit" class="btn text-white" style="margin-left:190px; background-color: #065aa9;">Confirm</button>
       <br><br>
-
-
     </form>
   </div>
 </div>
-
-

@@ -17,9 +17,9 @@
       <tr *ngFor="let stock of stockList">
         <td><img [src]="stock.stocksImage" width="50" alt="Stock Image" /></td>
         <td>{{ stock.stockName }}</td>
-        <td>{{ stock.stocksDeclared }}</td>
+        <td><strong>₹</strong>{{ stock.stocksDeclared }}</td>
         <td>{{ stock.totalStocks }}</td>
-        <td>{{ stock.stockPrice }}</td>
+        <td><strong>₹</strong>{{ stock.stockPrice }}</td>
         <td>
           <button class="btn btn-success" (click)="openUpdateModal(updateModal, stock)">Update</button>
         </td>

@@ -7,11 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { NotyfService } from '../service/notyf.service';
 
-
 @Component({
   selector: 'app-signup',
-  standalone:true,
-  imports:[ ReactiveFormsModule,HttpClientModule,CommonModule],
+  standalone: true,
+  imports: [ReactiveFormsModule, HttpClientModule, CommonModule],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.css']
 })
@@ -20,7 +19,12 @@ export class SignupComponent implements OnInit {
   errorMessage: string = '';
   successMessage: string = '';
 
-  constructor(private fb: FormBuilder, private signupService: SignupService, private router: Router,  private notyf: NotyfService) {}
+  constructor(
+    private fb: FormBuilder,
+    private signupService: SignupService,
+    private router: Router,
+    private notyf: NotyfService
+  ) {}
 
   ngOnInit(): void {
     this.signupForm = this.fb.group({
@@ -35,8 +39,8 @@ export class SignupComponent implements OnInit {
   }
 
   get passwordPattern(): RegExp {
-    // Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number and one special character
-    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // Minimum 8 characters, at least one uppercase, one lowercase, one number, and one special character
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!"#$%&'()*+,\-./:;<=>?@\[\]^_`{|}~])[A-Za-z\d!"#$%&'()*+,\-./:;<=>?@\[\]^_`{|}~]{8,}$/;
   }
 
   pastDateValidator(): ValidatorFn {
@@ -54,25 +58,39 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.signupForm.valid) {
-      const formData = this.signupForm.value;
-      this.signupService.registerUser(formData).subscribe({
-        next: (response) => {
-          this.successMessage = response.message;
-          this.errorMessage = '';
-          localStorage.setItem('isNewUser', 'true');
-          setTimeout(() => {
-            this.router.navigate(['/app-login']); 
-          }, 2000);
-        },
-    error: (error: any) => {
-  console.log(error.error.message);
-  this.errorMessage = error.error.message || 'An error occurred during signup.';
-  this.successMessage = '';
-}
-      });
-    } else {
+    const formData = this.signupForm.value;
+const allFieldsEmpty = Object.values(formData).every(value =>
+  typeof value === 'string' ? value.trim() === '' : !value
+);
+
+    if (allFieldsEmpty) {
+      this.errorMessage = 'Please fill all the fields above.';
+      this.successMessage = '';
       this.signupForm.markAllAsTouched();
+      return;
     }
+
+    if (this.signupForm.invalid) {
+      this.errorMessage = 'Please fill the highlighted fields correctly.';
+      this.successMessage = '';
+      this.signupForm.markAllAsTouched();
+      return;
+    }
+
+    this.signupService.registerUser(formData).subscribe({
+      next: (response) => {
+        this.successMessage = response.message;
+        this.errorMessage = '';
+        localStorage.setItem('isNewUser', 'true');
+        setTimeout(() => {
+          this.router.navigate(['/app-login']);
+        }, 2000);
+      },
+      error: (error: any) => {
+        console.log(error.error.message);
+        this.errorMessage = error.error.message || 'An error occurred during signup.';
+        this.successMessage = '';
+      }
+    });
   }
 }
