@@ -14,6 +14,7 @@ export class MyStocksService {
       'Authorization': 'Bearer ' + token
     });
   }
+  
 
   sellStock(data: { stockName: string; stockQuantity: number; accountPIN: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/sell`, data, {

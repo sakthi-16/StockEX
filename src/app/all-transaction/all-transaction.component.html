@@ -1,5 +1,16 @@
 <app-home></app-home>
+<div style="margin-top: 10%;"></div>
+<!--bar chart section -->
+<div style="max-width: 800px; height: 400px; margin: 30px auto;" *ngIf="chartReady">
+  <canvas baseChart
+    [data]="barChartData"
+    [options]="barChartOptions"
+    [type]="barChartType">
+  </canvas>
+</div>
 
+
+<!--  Table Section  -->
 <div style="margin-top:10%" class="table-container" *ngIf="paginatedData.length > 0; else noTransactions">
   <h2>Stock Transactions</h2>
   <table class="transaction-table">
@@ -32,7 +43,7 @@
   </div>
 </div>
 
-<!-- Centered No-Transaction Template -->
+<!-- ✅ Empty fallback -->
 <ng-template #noTransactions>
   <div class="d-flex flex-column justify-content-center align-items-center" style="min-height: 60vh;">
     <img src="assets/images/no-data.jpg" width="300" alt="No stock transactions found" />

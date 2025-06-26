@@ -126,3 +126,23 @@
   border-radius: 6px;
   border: 1px solid #ccc;
 }
+
+.status-success {
+  color: green;
+  font-weight: 600;
+}
+
+.status-failure {
+  color: red;
+  font-weight: 600;
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.transaction-table th, .transaction-table td {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  text-align: center;
+}

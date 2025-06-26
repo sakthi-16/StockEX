@@ -1,7 +1,26 @@
 <app-home></app-home>
-<div class="table-container" style="margin-top:10%;" *ngIf="transactions.length > 0; else noData">
+ <div style="margin-top: 10%;">
+<div class="table-container"   *ngIf="transactions.length > 0; else noData">
+ 
   <h2>All Account Transactions</h2>
 
+  <!-- ✅ Summary -->
+  <div class="summary-box">
+    <p><strong>Total Pay-ins:</strong> ₹{{ totalPayins | number:'1.2-2' }}</p>
+    <p><strong>Total Payouts:</strong> ₹{{ totalPayouts | number:'1.2-2' }}</p>
+  </div>
+
+  <!-- ✅ Chart -->
+  <div class="chart-container">
+    <canvas
+      baseChart
+      [type]="barChartType"
+      [data]="barChartData"
+      [options]="barChartOptions"
+    ></canvas>
+  </div>
+
+  <!-- ✅ Table -->
   <table class="transaction-table">
     <thead>
       <tr>
@@ -11,28 +30,22 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let tx of paginatedTransactions; let i = index">
+      <tr *ngFor="let tx of paginatedTransactions">
         <td>{{ tx.amountTransactedTime }}</td>
-        
-       
-        <td [ngClass]="getTransactionTypeClass(tx)">
-          ₹{{ tx.amountTransacted }}
-        </td>
-
+        <td [ngClass]="getTransactionTypeClass(tx)">₹{{ tx.amountTransacted }}</td>
         <td>₹{{ tx.currentAccountBalance }}</td>
       </tr>
     </tbody>
   </table>
 
-  <!-- Pagination controls -->
+  <!-- ✅ Pagination -->
   <div class="pagination-controls">
     <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
     <span>Page {{ currentPage }} of {{ totalPages }}</span>
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
   </div>
 </div>
-
-
+</div>
 <ng-template #noData>
   <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
     <div class="text-center">
@@ -41,4 +54,3 @@
     </div>
   </div>
 </ng-template>
-

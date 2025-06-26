@@ -48,9 +48,11 @@ h3 {
 .btn-danger:hover {
   background-color: #c82333;
 }
+
 table img {
   border-radius: 5px;
 }
+
 .container {
   max-width: 960px;
 }
@@ -61,4 +63,24 @@ table img {
 
 .alert {
   font-size: 0.95rem;
+}
+
+
+/* ✅ CHART STYLING ADDED BELOW */
+canvas {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 340px;
+  margin: 0 auto;
+  display: block;
+}
+
+.row h5 {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* ✅ Optional padding for chart box */
+canvas + canvas {
+  margin-top: 20px;
 }

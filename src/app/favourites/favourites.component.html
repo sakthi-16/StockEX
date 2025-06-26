@@ -16,6 +16,8 @@
           <th>Price When Added</th>
           <th>Current Price</th>
           <th>Growth Rate</th>
+          <th>Buy</th>
+
         </tr>
       </thead>
       <tbody>
@@ -23,7 +25,7 @@
           <td>
             <button 
               class="btn btn-sm" 
-              title="click to remove from favourites"
+              title="click here to remove this from collection"
               [ngClass]="{'btn-danger': recentlyRemovedStockName !== stock.stockName, 'btn-outline-light text-dark': recentlyRemovedStockName === stock.stockName}"
               (click)="removeStock(stock.stockName)">
               🤍
@@ -45,6 +47,11 @@
           >
             {{ stock.growthRate }}%
           </td>
+
+          <td>
+  <button class="btn btn-primary btn-sm" (click)="openBuyModal(stock)">Buy</button>
+</td>
+
         </tr>
       </tbody>
     </table>
@@ -145,3 +152,156 @@
     </div>
   </div>
 </div>
+
+
+  <!-- First Modal: Buy Stocks -->
+  <ng-template #buyModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Buy Stock - {{ selectedStock?.stockName }}</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="buyMessage" class="alert"
+           [ngClass]="{'alert-success': isSuccessMessage, 'alert-danger': !isSuccessMessage}">
+        {{ buyMessage }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Number of Stocks</label>
+        <input type="number" class="form-control"
+               [(ngModel)]="buyQuantity"
+               [max]="selectedStock?.totalStocks"
+               min="1"
+               required
+               (ngModelChange)="validateBuyForm()" />
+        <div *ngIf="buyQuantityError === 'invalid'" class="text-danger mt-1">
+          Please enter a positive whole number.
+        </div>
+        <div *ngIf="buyQuantityError === 'exceed'" class="text-danger mt-1">
+          Maximum available: {{ selectedStock?.totalStocks }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Enter PIN</label>
+        <input type="password" class="form-control" [(ngModel)]="enteredBuyPin" required />
+      </div>
+
+      <!-- Bank Type Selection -->
+      <div class="mb-3">
+        <label class="form-label">Select Bank Type</label><br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="bankType" id="retailBank"
+                 [value]="'01'" [(ngModel)]="selectedBankType" (change)="onBankTypeChange('B2C')">
+          <label class="form-check-label" for="retailBank">Retail Bank</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="bankType" id="corporateBank"
+                 [value]="'02'" [(ngModel)]="selectedBankType" (change)="onBankTypeChange('B2B')">
+          <label class="form-check-label" for="corporateBank">Corporate Bank</label>
+        </div>
+      </div>
+
+      <!-- 🔧 Spinner when loading banks -->
+      <div *ngIf="isBankLoading" class="text-center mb-3">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <!-- Bank Dropdown -->
+      <div class="mb-3" *ngIf="!isBankLoading && displayedBanks.length > 0">
+        <label class="form-label">Select Your Bank</label>
+        <select class="form-select" [(ngModel)]="selectedBank" (ngModelChange)="onBankChange($event)" required>
+          <option value="" disabled selected>Select a bank</option>
+          <option *ngFor="let bank of displayedBanks" [ngValue]="bank">
+            {{ bank.bankName }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+   <button class="btn btn-success"
+        [disabled]="!isBuyFormComplete() || buyMessage"
+        (click)="proceedToBuy(modal)">
+  Confirm Buy
+</button>
+
+    </div>
+  </ng-template>
+
+  <!-- Second Modal: Purchase Confirmation -->
+  <ng-template #confirmModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Confirm Purchase - {{ confirmData?.stockName }}</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modal-body">
+      <p><strong>Message:</strong> {{ confirmData?.message }}</p>
+      <p><strong>Stock:</strong> {{ confirmData?.stockName }}</p>
+      <p><strong>Quantity:</strong> {{ confirmData?.stockQuantity }}</p>
+      <p><strong>Sub Total:</strong> ₹{{ confirmData?.subTotal | number:'1.2-2' }}</p>
+      <p><strong>GST:</strong> ₹{{ confirmData?.gst | number:'1.2-2' }}</p>
+      <p><strong>Exchange Charges:</strong> ₹{{ confirmData?.exchangeCharges | number:'1.2-2' }}</p>
+      <p><strong>Brokerage:</strong> ₹{{ confirmData?.brokerage | number:'1.2-2' }}</p>
+      <p><strong>Total Amount to Pay:</strong> ₹{{ confirmData?.amountToPay | number:'1.2-2' }}</p>
+      <p><strong>Bank:</strong> {{ selectedBank.bankName  }}</p>
+
+      
+      <a href="javascript:void(0)" (click)="openTaxesModal()">Taxes (See Details)</a>
+    </div>
+
+    <!-- 🔧 Spinner during FPX redirection -->
+    <div *ngIf="isRedirectingToFPX" class="text-center mb-3">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Redirecting to FPX...</span>
+      </div>
+      <p class="mt-2">Redirecting to FPX gateway. Please wait...</p>
+    </div>
+
+    <!-- 🔧 Only show buttons when not redirecting -->
+    <div class="modal-footer" *ngIf="!isRedirectingToFPX">
+      <button class="btn btn-secondary" (click)="modal.dismiss()">Cancel</button>
+      <button class="btn btn-primary" (click)="submitFPXForm()">
+        Confirm Payment ₹{{ confirmData?.amountToPay | number:'1.2-2' }}
+      </button>
+    </div>
+  </ng-template>
+
+  <!-- Third Modal: Taxes Details -->
+  <ng-template #taxesModal let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">Tax Details</h5>
+      <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+      <p><strong>GST:</strong> ₹{{ confirmData?.gst | number:'1.2-2' }}</p>
+      <p><strong>Exchange Charges:</strong> ₹{{ confirmData?.exchangeCharges | number:'1.2-2' }}</p>
+      <p><strong>Brokerage:</strong> ₹{{ confirmData?.brokerage | number:'1.2-2' }}</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+    </div>
+  </ng-template>
+
+
+
+    <form #paymentform [action]="fpxUrl" method="POST" style="display:none" id="fpxForm">
+    <input type="hidden" name="amount" [value]=" confirmData?.amountToPay?.toFixed(2)" />
+    <input type="hidden" name="redirectUrl" [value]="redirectUrl" />
+    <input type="hidden" name="sellerOrderNo" [value]="confirmData?.sellerOrderNo" />
+    <input type="hidden" name="bankType" value='01'/>
+    <input type="hidden" name="mid" value='FPX000000054555' />
+    <input type="hidden" name="buyerName" value='User' />
+    <input type="hidden" name="tid" value='27965678' />
+    <input type="hidden" name="merchantName" value='MOBI DEMO' />
+    <input type="hidden" name="bank" [value]="confirmData?.bankCode??'TEST0021'" />
+    <input type="hidden" name="service" value='FULL_LIST' />
+    <input type="hidden" name="email" [value]="confirmData?.userMail??'snsakthi16@gmail.com'"/>
+    <input type="hidden" name="subMID" value='201100000012450'/>
+    <input type="hidden" name="checkSum" [value]="confirmData?.checkSum?? ''" />
+  </form>

@@ -63,7 +63,7 @@ loadFavourites() {
 }
 
 loadCollection(collectionName: string) {
-  this.selectedCollectionName = collectionName; // ✅ add this line
+  this.selectedCollectionName = collectionName; //  add this line
   this.stockService.getCollectionByName(collectionName).subscribe({
     next: (stocks: any[]) => {
       console.log("Stocks in selected collection:", stocks);
